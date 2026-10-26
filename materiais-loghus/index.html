@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Materiais Loghus</title>
+<meta name="description" content="Coloque listas de exercícios e apresentações no layout padrão do Curso Loghus.">
+<meta name="theme-color" content="#0040FF">
+<link rel="icon" href="assets/icon.png">
+<link rel="stylesheet" href="lib/katex/katex.min.css">
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-in">
+    <div class="brand">
+      <img src="assets/tab.png" alt="Curso Loghus">
+      <div><h1>Materiais Loghus</h1><p>Seu material no padrão do curso, pronto para baixar</p></div>
+    </div>
+    <nav class="tabs" role="tablist">
+      <button class="tab" role="tab" data-tab="lista" aria-selected="true">Lista de exercícios</button>
+      <button class="tab" role="tab" data-tab="slides" aria-selected="false">Apresentação</button>
+    </nav>
+    <div class="proj">
+      <button class="btn-ghost-w" id="btn-novo" title="Começar um material do zero">Novo</button>
+      <button class="btn-ghost-w" id="btn-abrir" title="Abrir um projeto salvo (.loghus)">Abrir</button>
+      <button class="btn-ghost-w" id="btn-salvar" title="Salvar o projeto para continuar depois">Salvar projeto</button>
+    </div>
+  </div>
+</header>
+
+<!-- ================= LISTA ================= -->
+<main class="view work on" id="view-lista">
+  <section class="editor">
+    <div class="card">
+      <h2><span class="step">1</span> Cabeçalho</h2>
+      <div class="row">
+        <label class="field"><span>Disciplina</span><input type="text" id="l-disc" placeholder="MATEMÁTICA"></label>
+        <label class="field"><span>Professor(a)</span><input type="text" id="l-prof" placeholder="PROF. ARTHUR"></label>
+      </div>
+      <div class="row" style="margin-top:10px;align-items:end">
+        <label class="field"><span>Numeração começa em</span><input type="number" id="l-num" min="1" value="1"></label>
+        <label class="check"><input type="checkbox" id="l-gab"> Incluir gabarito no final</label>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2><span class="step">2</span> Trazer as questões</h2>
+      <div class="btns">
+        <button class="btn primary" id="btn-docx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M12 18v-6M9 15l3 3 3-3"/></svg>Importar do Word (.docx)</button>
+        <button class="btn" id="btn-colar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/></svg>Colar texto</button>
+      </div>
+      <p class="hint">O app separa sozinho cada questão, as alternativas (A, B, C…), as imagens e as fórmulas. Depois é só conferir abaixo. Você também pode digitar questão por questão.</p>
+    </div>
+
+    <div id="q-list" class="editor"></div>
+    <div class="add-bar"><button class="btn" id="btn-addq"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>Nova questão</button></div>
+  </section>
+
+  <section class="preview" aria-label="Prévia da lista">
+    <div class="pv-bar">
+      <span class="info" id="l-info">Prévia</span>
+      <button class="btn accent" id="btn-pdf"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>Baixar PDF</button>
+      <button class="btn" id="btn-word">Baixar Word</button>
+      <button class="btn" id="btn-toslides" title="Cria uma apresentação com estas questões">Virar slides</button>
+    </div>
+    <div class="pv-scroll"><div class="zoomer" id="l-zoom"><div class="sheets" id="l-pages"></div></div></div>
+  </section>
+</main>
+
+<!-- ================= SLIDES ================= -->
+<main class="view work" id="view-slides">
+  <section class="editor">
+    <div class="card">
+      <h2><span class="step">1</span> Apresentação</h2>
+      <label class="field"><span>Nome do arquivo</span><input type="text" id="s-title" placeholder="Aulão de Geometria – Prof. Arthur"></label>
+      <div class="btns" style="margin-top:10px">
+        <button class="btn" id="btn-fromlista" title="Usa as questões da aba Lista de exercícios">Trazer questões da lista</button>
+      </div>
+    </div>
+    <div id="s-list" class="editor"></div>
+    <div class="card">
+      <h2><span class="step">+</span> Adicionar slide</h2>
+      <div class="add-bar" id="s-add">
+        <button class="btn sm" data-add="capa">Capa</button>
+        <button class="btn sm" data-add="secao">Divisória</button>
+        <button class="btn sm" data-add="topicos">Tópicos</button>
+        <button class="btn sm" data-add="texto-imagem">Texto + imagem</button>
+        <button class="btn sm" data-add="imagem">Imagem</button>
+        <button class="btn sm" data-add="questao">Questão</button>
+      </div>
+    </div>
+  </section>
+  <section class="preview" aria-label="Prévia dos slides">
+    <div class="pv-bar">
+      <span class="info" id="s-info">Prévia</span>
+      <button class="btn accent" id="btn-pptx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>Baixar PowerPoint</button>
+    </div>
+    <div class="pv-scroll"><div class="slides-grid" id="s-prev"></div></div>
+  </section>
+</main>
+
+<!-- ================= janelas ================= -->
+<div class="modal" id="m-colar" role="dialog" aria-modal="true">
+  <div class="dialog">
+    <header><h3>Colar a lista</h3><p>Cole o texto das questões (do Word, Google Docs, PDF ou site). Imagens podem ser coladas aqui também.</p></header>
+    <div class="dbody">
+      <textarea id="colar-txt" rows="14" placeholder="1. Enunciado da questão…&#10;a) primeira alternativa&#10;b) segunda alternativa&#10;…&#10;&#10;2. Próxima questão…"></textarea>
+      <label class="check"><input type="checkbox" id="colar-join"> Juntar linhas quebradas (texto copiado de PDF)</label>
+      <div class="summary" id="colar-sum">Cole o texto acima.</div>
+    </div>
+    <footer>
+      <button class="btn" data-close>Cancelar</button>
+      <button class="btn" id="colar-add">Adicionar ao final</button>
+      <button class="btn primary" id="colar-rep">Substituir a lista</button>
+    </footer>
+  </div>
+</div>
+
+<div class="modal" id="m-docx" role="dialog" aria-modal="true">
+  <div class="dialog">
+    <header><h3>Importar do Word</h3><p id="docx-name"></p></header>
+    <div class="dbody"><div class="summary" id="docx-sum"></div><div id="docx-warn"></div></div>
+    <footer>
+      <button class="btn" data-close>Cancelar</button>
+      <button class="btn" id="docx-add">Adicionar ao final</button>
+      <button class="btn primary" id="docx-rep">Substituir a lista</button>
+    </footer>
+  </div>
+</div>
+
+<div class="modal" id="m-math" role="dialog" aria-modal="true">
+  <div class="dialog">
+    <header><h3>Inserir fórmula</h3><p>Use os botões ou escreva em LaTeX. Ex.: <code>\frac{50x}{4}+\sqrt{3}</code></p></header>
+    <div class="dbody">
+      <div class="mathkeys" id="math-keys"></div>
+      <input type="text" id="math-in" placeholder="\frac{a}{b}" autocomplete="off" spellcheck="false">
+      <div class="mathprev" id="math-prev"></div>
+    </div>
+    <footer><button class="btn" data-close>Cancelar</button><button class="btn primary" id="math-ok">Inserir</button></footer>
+  </div>
+</div>
+
+<div class="modal" id="m-pdf" role="dialog" aria-modal="true">
+  <div class="dialog" style="width:min(520px,100%)">
+    <header><h3>Salvar a lista em PDF</h3></header>
+    <div class="dbody">
+      <p style="margin:0">Vai abrir a janela de impressão. Em <b>Destino</b> (ou Impressora), escolha <b>Salvar como PDF</b> e clique em <b>Salvar</b>.</p>
+      <p class="hint" style="margin:0">Deixe o tamanho do papel em A4 e as margens em “Padrão” ou “Nenhuma”. No celular, use “Compartilhar → Imprimir” e depois salve o PDF.</p>
+      <label class="check"><input type="checkbox" id="pdf-nomore"> Não mostrar de novo</label>
+    </div>
+    <footer><button class="btn" data-close>Cancelar</button><button class="btn primary" id="pdf-go">Abrir impressão</button></footer>
+  </div>
+</div>
+
+<input type="file" id="f-docx" accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document" hidden>
+<input type="file" id="f-img" accept="image/*" multiple hidden>
+<input type="file" id="f-proj" accept=".loghus,.json,application/json" hidden>
+
+<div class="toast" id="toast"></div>
+<div class="busy" id="busy">Processando…</div>
+<div id="print-root"></div>
+
+<script src="lib/jszip.min.js"></script>
+<script src="lib/katex/katex.min.js"></script>
+<script src="js/latex.js"></script>
+<script src="js/rich.js"></script>
+<script src="js/parser.js"></script>
+<script src="js/docx-import.js"></script>
+<script src="js/lista-render.js"></script>
+<script src="js/lista-docx.js"></script>
+<script src="js/slides.js"></script>
+<script src="js/modelos.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
